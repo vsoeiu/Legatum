@@ -1,7 +1,9 @@
 #!/bin/bash
 
-# 1. Instala dependencias con pip3
-pip3 install -r requirements.txt
+# $PYTHON_CMD apunta al ejecutable de Python instalado por Railway.
 
-# 2. Inicia la aplicación usando python3 y gunicorn
-python3 -m gunicorn app:app
+# 1. Instala dependencias con el comando de Python
+$PYTHON_CMD -m pip install -r requirements.txt
+
+# 2. Inicia la aplicación usando el comando de Python y gunicorn
+$PYTHON_CMD -m gunicorn app:app
