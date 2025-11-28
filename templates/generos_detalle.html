@@ -13,7 +13,7 @@
 
     <style>
         /* ==========================================================================
-           1. ARQUITECTURA DE DISEÑO (IMPERIAL DARK V8 INTEGRATED)
+           1. ARQUITECTURA DE DISEÑO (IMPERIAL GOLD V8)
            ========================================================================== */
         :root {
             /* --- Paleta Base --- */
@@ -22,20 +22,23 @@
             --color-bg-card: #0f0f0f;         
             --color-bg-overlay: rgba(0, 0, 0, 0.92); 
             
-            /* --- Acentos (Rojo Legatum) --- */
+            /* --- Acentos Originales --- */
             --color-accent-dark: #3a0000;     
             --color-accent-main: #800000;     
             --color-accent-light: #c20000;    
             --color-accent-vivid: #ff1a1a;    
-            
-            /* --- Efectos --- */
             --color-accent-glow: rgba(194, 0, 0, 0.45);
-            --color-text-glow: rgba(255, 255, 255, 0.15);
+
+            /* --- NUEVO: Acentos Dorados --- */
+            --gold-dark: #9F7F3C;
+            --gold-main: #D4AF37;
+            --gold-light: #FADD75;
             
             /* --- Texto --- */
             --color-text-primary: #ffffff;    
             --color-text-secondary: #a3a3a3;  
-            --color-text-muted: #555555;      
+            --color-text-muted: #555555;
+            --color-text-glow: rgba(255, 255, 255, 0.15);      
             
             /* --- UI --- */
             --border-subtle: 1px solid rgba(255, 255, 255, 0.08);
@@ -69,119 +72,103 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        html {
-            font-size: 16px;
-            scroll-behavior: smooth;
-            height: 100%;
-        }
+        html { scroll-behavior: smooth; height: 100%; font-size: 16px; }
 
         body {
             background-color: var(--color-bg-master);
             color: var(--color-text-primary);
             font-family: var(--font-body);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
-            line-height: 1.6;
-            position: relative;
-            width: 100%;
+            display: flex; flex-direction: column;
+            overflow-x: hidden; line-height: 1.6;
+            position: relative; width: 100%;
         }
 
         /* Scrollbar */
         ::-webkit-scrollbar { width: 8px; background: var(--color-bg-master); }
         ::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
-        ::-webkit-scrollbar-thumb {
-            background: #444;
-            border-radius: 4px;
-            border: 2px solid var(--color-bg-master);
-        }
+        ::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; border: 2px solid var(--color-bg-master); }
         ::-webkit-scrollbar-thumb:hover { background: var(--color-accent-main); }
 
-        ::-selection { background: var(--color-accent-main); color: white; }
+        ::selection { background: var(--color-accent-main); color: white; }
 
         /* ==========================================================================
            3. AMBIENTACIÓN
            ========================================================================== */
-        .ambient-backdrop {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: radial-gradient(circle at 50% -20%, #2a0000 0%, #020202 70%);
-            z-index: -3; pointer-events: none;
-        }
+        .ambient-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% -20%, #2a0000 0%, #020202 70%); z-index: -3; pointer-events: none; }
+        .dot-pattern { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px); background-size: 24px 24px; z-index: -2; pointer-events: none; opacity: 0.6; }
+        .noise-texture { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E"); z-index: -1; pointer-events: none; mix-blend-mode: overlay; }
+        .star-field { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; background: radial-gradient(ellipse at bottom, #1a0000 0%, #000000 100%); overflow: hidden; }
         
-        .dot-pattern {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px);
-            background-size: 24px 24px;
-            z-index: -2; pointer-events: none;
-            opacity: 0.6;
-        }
-        
-        .noise-texture {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
-            z-index: -1; pointer-events: none;
-            mix-blend-mode: overlay;
-        }
-
-        .star-field {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; pointer-events: none;
-            background: radial-gradient(ellipse at bottom, #1a0000 0%, #000000 100%);
-            overflow: hidden;
-        }
-        
-        /* Estrellas Animadas */
-        .stars-1 { width: 1px; height: 1px; background: transparent; box-shadow: 147px 778px #FFF , 1169px 635px #FFF , 1136px 240px #FFF , 1737px 152px #FFF , 1372px 718px #FFF , 1802px 898px #FFF , 457px 399px #FFF , 1253px 787px #FFF , 66px 567px #FFF , 151px 588px #FFF , 976px 779px #FFF , 1655px 154px #FFF , 1118px 419px #FFF , 428px 920px #FFF , 169px 145px #FFF , 762px 96px #FFF , 1923px 394px #FFF , 1466px 580px #FFF , 452px 554px #FFF , 1349px 79px #FFF; animation: animStar 100s linear infinite; }
-        .stars-2 { width: 2px; height: 2px; background: transparent; box-shadow: 1457px 796px #FFF , 1681px 187px #FFF , 1253px 178px #FFF , 146px 879px #FFF , 932px 505px #FFF , 732px 876px #FFF , 367px 796px #FFF , 194px 635px #FFF , 108px 682px #FFF , 1813px 876px #FFF; animation: animStar 150s linear infinite; }
+        .stars-1 { width: 1px; height: 1px; background: transparent; box-shadow: 147px 778px #FFF , 1169px 635px #FFF , 1136px 240px #FFF , 1737px 152px #FFF , 1372px 718px #FFF; animation: animStar 100s linear infinite; }
+        .stars-2 { width: 2px; height: 2px; background: transparent; box-shadow: 1457px 796px #FFF , 1681px 187px #FFF , 1253px 178px #FFF , 146px 879px #FFF , 932px 505px #FFF; animation: animStar 150s linear infinite; }
         .stars-3 { width: 3px; height: 3px; background: transparent; box-shadow: 1598px 260px #FFF , 1014px 88px #FFF , 1357px 591px #FFF; animation: animStar 200s linear infinite; }
-
-        @keyframes animStar {
-            from { transform: translateY(0px); }
-            to { transform: translateY(-2000px); }
-        }
+        @keyframes animStar { from { transform: translateY(0px); } to { transform: translateY(-2000px); } }
 
         /* ==========================================================================
-           4. NAVBAR (DISEÑO CORREGIDO)
+           4. NAVBAR (ESTILO IMPERIAL GOLD & SLIM)
            ========================================================================== */
         .navbar {
             position: sticky; top: 0; z-index: 1000;
             display: flex; justify-content: space-between; align-items: center;
-            padding: 1.2rem 5%;
-            background: rgba(2, 2, 2, 0.9);
+            /* Altura y padding ajustados */
+            padding: 0 5%;
+            height: 70px;
+            background: rgba(2, 2, 2, 0.95);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border-bottom: var(--border-subtle);
             transition: padding var(--duration-fast);
         }
-        .navbar.scrolled { padding: 0.8rem 5%; background: rgba(0,0,0,0.98); }
+        .navbar.scrolled { background: rgba(0,0,0,0.98); }
         
-        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-        .brand-text {
-            font-family: var(--font-heading); font-weight: 800; font-size: 1.5rem;
-            letter-spacing: 4px; color: var(--color-text-primary);
-            text-transform: uppercase;
+        .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; transition: 0.3s; }
+        .brand:hover { transform: translateY(-1px); }
+
+        /* Pluma Dorada */
+        .brand-icon-img {
+            height: 35px; width: auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
         }
-        .brand-text span { color: var(--color-accent-light); }
+
+        /* Texto LEGATUM Dorado */
+        .brand-text {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 1.6rem; /* Ajustado */
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            
+            /* Gradiente Dorado */
+            background: linear-gradient(to right, var(--gold-dark), var(--gold-main), var(--gold-light), var(--gold-main));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
         
-        .nav-menu { display: flex; gap: 35px; list-style: none; }
+        /* Menú Limpio */
+        .nav-menu { display: flex; gap: 30px; list-style: none; padding: 0; margin: 0; }
         .nav-link {
             text-decoration: none; color: var(--color-text-secondary);
-            font-size: 0.8rem; font-weight: 600; text-transform: uppercase;
+            font-size: 0.85rem; font-weight: 600; text-transform: uppercase;
             letter-spacing: 2px; position: relative; padding: 5px 0;
             transition: color var(--duration-fast);
         }
-        .nav-link:hover, .nav-link.active { color: var(--color-text-primary); }
         .nav-link::after {
-            content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px;
-            background: var(--color-accent-light); transition: width var(--duration-fast) var(--ease-elegant);
+            content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px;
+            background: var(--gold-main); /* Subrayado Dorado */
+            transition: width var(--duration-fast) var(--ease-elegant);
         }
+        .nav-link:hover, .nav-link.active { color: var(--color-text-primary); }
         .nav-link:hover::after, .nav-link.active::after { width: 100%; }
         
-        .header-search { position: relative; width: 280px; }
+        /* Buscador Compacto */
+        .header-search { position: relative; width: 260px; }
         .header-search input {
             width: 100%; background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 12px 45px 12px 20px; border-radius: 30px;
+            padding: 10px 45px 10px 20px; border-radius: 30px;
             color: var(--color-text-primary); font-size: 0.9rem;
             transition: all 0.3s var(--ease-elegant); font-family: var(--font-body);
         }
@@ -190,8 +177,8 @@
             box-shadow: 0 0 15px rgba(255, 26, 26, 0.2);
         }
         .search-btn-round {
-            position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
-            width: 34px; height: 34px; background: var(--color-accent-vivid);
+            position: absolute; right: 5px; top: 50%; transform: translateY(-50%);
+            width: 32px; height: 32px; background: var(--color-accent-vivid);
             border-radius: 50%; border: none; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
             color: var(--color-text-primary); transition: all 0.3s var(--ease-bounce);
@@ -217,13 +204,17 @@
         .hero-overline a:hover { color: var(--color-accent-vivid); }
 
         .hero-title {
-            font-family: var(--font-heading); font-weight: 900; font-size: 5rem;
+            /* Fuente Cinzel */
+            font-family: 'Cinzel', serif;
+            font-size: 5rem; font-weight: 700;
             margin: 0; text-transform: uppercase; letter-spacing: 4px;
-            /* Degradado Metálico */
-            background: linear-gradient(180deg, #ffffff 10%, #777777 100%);
+            
+            /* Gradiente Dorado */
+            background: linear-gradient(to right, var(--gold-dark), var(--gold-main), var(--gold-light), var(--gold-main));
             -webkit-background-clip: text; background-clip: text;
             -webkit-text-fill-color: transparent; color: transparent;
-            text-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
             opacity: 0; animation: zoomInHero 1.2s 0.2s var(--ease-elegant) forwards;
         }
 
@@ -266,7 +257,7 @@
         .local-search-input:focus + .local-search-icon { color: var(--color-accent-light); }
 
         .filter-group { display: flex; gap: 12px; }
-        .filter-pill { /* ESTILO APLICADO AL BOTÓN A-Z / RELEVANCIA */
+        .filter-pill {
             background: transparent; border: 1px solid rgba(255,255,255,0.15);
             color: var(--color-text-muted); padding: 10px 24px; border-radius: 8px;
             font-weight: 700; font-size: 0.85rem; text-transform: uppercase;
@@ -286,13 +277,10 @@
         }
 
         .artist-grid {
-            display: grid;
-            /* 4 Columnas Fijas */
-            grid-template-columns: repeat(4, 1fr);
+            display: grid; grid-template-columns: repeat(4, 1fr);
             gap: 30px; justify-content: center;
         }
 
-        /* --- Tarjeta Individual --- */
         .card {
             background: var(--color-bg-card); border: var(--border-subtle);
             border-radius: 24px; padding: 45px 30px; text-align: center;
@@ -300,10 +288,9 @@
             transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             display: flex; flex-direction: column; align-items: center;
             justify-content: space-between;
-            min-height: 550px; /* Altura considerable */
+            min-height: 550px;
             box-shadow: var(--shadow-soft);
             opacity: 0; transform: translateY(50px);
-            /* Variable CSS para delay */
             animation-delay: var(--card-delay, 0s);
         }
 
@@ -319,10 +306,8 @@
         }
         .card:hover::before { transform: scaleX(1); }
 
-        /* --- Imagen Gigante (Vinilo) --- */
         .img-container {
-            width: 220px; height: 220px; /* Imagen grande */
-            margin: 0 auto 2.5rem; position: relative; z-index: 1;
+            width: 220px; height: 220px; margin: 0 auto 2.5rem; position: relative; z-index: 1;
             border-radius: 50%; padding: 6px;
             background: linear-gradient(135deg, #2a2a2a, var(--color-accent-dark));
             transition: all 0.5s var(--ease-elegant);
@@ -335,7 +320,6 @@
             transition: transform 0.5s var(--ease-elegant), border-color 0.5s;
         }
 
-        /* Skeleton Loader */
         .skeleton {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             border-radius: 50%; background: #151515;
@@ -356,7 +340,6 @@
         }
         @keyframes spinVinyl { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* --- Info --- */
         .card-info {
             width: 100%; z-index: 2; flex-grow: 1;
             display: flex; flex-direction: column; justify-content: flex-end;
@@ -378,7 +361,6 @@
             display: block; opacity: 0.9;
         }
 
-        /* Barra de Popularidad */
         .stats-container { width: 100%; }
         .stats-header {
             display: flex; justify-content: space-between; margin-bottom: 10px;
@@ -391,13 +373,12 @@
         }
         .progress-bar {
             height: 100%; background: linear-gradient(90deg, var(--color-accent-main), var(--color-accent-light));
-            width: var(--prog-width, 0%); /* Variable CSS */
+            width: var(--prog-width, 0%);
             box-shadow: 0 0 15px var(--color-accent-main);
             transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
             border-radius: 3px;
         }
 
-        /* Botón Ojo */
         .quick-view-btn {
             position: absolute; top: 20px; right: 20px; width: 42px; height: 42px;
             border-radius: 50%; background: rgba(0,0,0,0.6);
@@ -412,7 +393,6 @@
             border-color: var(--color-accent-light); box-shadow: 0 0 15px var(--color-accent-glow);
         }
 
-        /* Estados */
         .no-results, .error-state {
             grid-column: 1 / -1; text-align: center; padding: 100px 2rem;
             background: var(--color-bg-card); border: 1px dashed rgba(255,255,255,0.1);
@@ -552,7 +532,8 @@
 
     <nav class="navbar" id="navbar">
         <a href="/" class="brand">
-            <div class="brand-text">LEGATUM<span>.</span></div>
+            <img src="{{ url_for('static', filename='golden-feather.png') }}" alt="Legatum Icon" class="brand-icon-img">
+            <div class="brand-text">LEGATUM</div>
         </a>
         <ul class="nav-menu">
             <li><a href="/" class="nav-link">Inicio</a></li>

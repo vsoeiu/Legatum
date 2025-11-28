@@ -297,10 +297,10 @@ class SpotifyClient(BaseDriver):
         if res and 'access_token' in res:
             self.access_token = res['access_token']
             self.token_expiry = time.time() + res.get('expires_in', 3600) - 60
-            logger.info("✅ Conexión Spotify Exitosa")
+            logger.info(" Conexión Spotify Exitosa")
             return self.access_token
         
-        logger.error("❌ Error de autenticación Spotify - Revisa CLIENT ID / SECRET")
+        logger.error(" Error de autenticación Spotify - Revisa CLIENT ID / SECRET")
         return None
 
     def fetch_artist_quick(self, query: str):
@@ -353,7 +353,7 @@ class LastFMClient(BaseDriver):
         # --- RESCATE SPOTIFY ---
         # Si LastFM nos da la estrella (placeholder) o está vacío, llamamos a Spotify
         if img == Config.PLACEHOLDER_IMG or not img:
-            logger.info(f"🔄 Rescatando imagen para {art['name']} desde Spotify...")
+            logger.info(f" Rescatando imagen para {art['name']} desde Spotify...")
             sp = SpotifyClient()
             sp_data = sp.fetch_artist_quick(art['name'])
             if sp_data:
@@ -485,5 +485,5 @@ def genre_detail_view(nombre_genero):
     return render_template('generos_detalle.html', genero=nombre_genero, artistas=data)
 
 if __name__ == '__main__':
- print("🚀 LEGATUM SYSTEM v12.0 ONLINE - http://127.0.0.1:5000")
+ print(" LEGATUM SYSTEM v12.0 ONLINE - http://127.0.0.1:5000")
 app.run(debug=True, port=5000)

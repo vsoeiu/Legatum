@@ -10,11 +10,11 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600;800;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
         /* ==========================================================================
-           1. SISTEMA DE DISEÑO "DEEP SPACE TITANIUM"
+           1. SISTEMA DE DISEÑO "DEEP SPACE TITANIUM" + IMPERIAL GOLD
            ========================================================================== */
         :root {
             /* --- Paleta de Fondo --- */
@@ -34,6 +34,11 @@
             --neon-secondary: #800000;  /* Sangre */
             --neon-glow: 0 0 25px rgba(255, 26, 26, 0.5);
             --neon-text-glow: 0 0 10px rgba(255, 255, 255, 0.3);
+
+            /* --- Acentos Dorados (Estilo Imperial) --- */
+            --gold-dark: #9F7F3C;
+            --gold-main: #D4AF37;
+            --gold-light: #FADD75;
             
             /* --- Tipografía --- */
             --text-primary: #ffffff;
@@ -127,14 +132,15 @@
         ::-webkit-scrollbar-thumb:hover { background-color: rgba(255,255,255,0.4); }
 
         /* ==========================================================================
-           4. BARRA DE NAVEGACIÓN "COMMAND CENTER"
+           4. BARRA DE NAVEGACIÓN "IMPERIAL STYLE" (CORREGIDA Y ADELGAZADA)
            ========================================================================== */
         .navbar {
-            background: rgba(5, 0, 0, 0.85);
+            background: rgba(2, 2, 2, 0.95);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--glass-border);
-            height: 90px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            /* Altura reducida para coincidir con artistas.html */
+            height: 70px; 
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -145,87 +151,99 @@
             transition: all 0.4s ease;
         }
 
-        /* Logotipo */
+        /* Logotipo con Icono */
         .brand-wrapper {
-            display: flex; align-items: center; gap: 15px; text-decoration: none;
+            display: flex; align-items: center; gap: 10px; text-decoration: none;
             transition: var(--anim-fast);
         }
-        .brand-wrapper:hover { transform: scale(1.02); }
+        .brand-wrapper:hover { transform: translateY(-1px); }
 
+        /* Icono ajustado para barra delgada */
+        .brand-icon-img {
+            height: 35px; /* Reducido para encajar en barra de 70px */
+            width: auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+
+        /* Texto LEGATUM ajustado (Más pequeño) */
         .brand-logo {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;
-            font-size: 2rem;
-            letter-spacing: 3px;
-            color: white;
+            font-family: 'Cinzel', serif; 
+            font-weight: 700;
+            font-size: 1.6rem; /* Reducido de 2.2rem a 1.6rem para elegancia */
+            letter-spacing: 2px;
             text-transform: uppercase;
             position: relative;
+            
+            /* Efecto Dorado */
+            background: linear-gradient(to right, var(--gold-dark), var(--gold-main), var(--gold-light), var(--gold-main));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
         
-        .brand-dot {
-            color: var(--neon-primary);
-            text-shadow: 0 0 15px var(--neon-primary);
-            font-size: 2.5rem;
-            line-height: 0;
-        }
-
-        /* Menú Central */
+        /* Menú Central - ESTILO LIMPIO (Sin cápsulas rojas) */
         .nav-menu {
-            display: flex; gap: 10px;
-            background: rgba(255,255,255,0.03);
-            padding: 8px;
-            border-radius: 50px;
-            border: 1px solid var(--glass-border);
+            display: flex; gap: 30px;
+            background: transparent; /* Fondo transparente */
+            padding: 0;
+            border: none;
         }
 
-        .nav-item {
+        .nav-link {
             color: var(--text-secondary);
             text-decoration: none;
             font-weight: 600;
             font-size: 0.85rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: var(--anim-fast);
-            padding: 10px 25px;
-            border-radius: 30px;
+            letter-spacing: 2px;
+            position: relative;
+            padding: 5px 0;
+            transition: color 0.3s;
+            font-family: 'Inter', sans-serif;
         }
 
-        .nav-item:hover {
+        .nav-link:hover, .nav-link.active {
             color: white;
-            background: rgba(255,255,255,0.05);
+            /* Se eliminan backgrounds y box-shadows de estilo botón */
+            background: transparent; 
+            box-shadow: none;
         }
 
-        .nav-item.active {
-            color: white;
-            background: var(--neon-primary);
-            box-shadow: var(--neon-glow);
+        /* Efecto de subrayado dorado al hacer hover */
+        .nav-link::after {
+            content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px;
+            background: var(--gold-main); 
+            transition: width 0.3s var(--anim-smooth);
         }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
 
-        /* Buscador Global */
-        .header-search { position: relative; width: 350px; }
+        /* Buscador Global - Estilo Compacto */
+        .header-search { position: relative; width: 280px; }
 
         .search-input {
             width: 100%;
-            background: rgba(0,0,0,0.4);
-            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.05); /* Fondo más sutil */
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 50px;
-            padding: 14px 55px 14px 25px;
+            padding: 10px 45px 10px 20px; /* Padding reducido verticalmente */
             color: white;
             font-family: 'Inter', sans-serif;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             transition: var(--anim-smooth);
         }
 
         .search-input:focus {
             border-color: var(--neon-primary);
-            background: rgba(0,0,0,0.8);
-            box-shadow: 0 0 25px rgba(255,26,26,0.1);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 15px rgba(255,26,26,0.1);
             width: 100%;
         }
 
         .search-btn-icon {
-            position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
-            width: 40px; height: 40px;
+            position: absolute; right: 5px; top: 50%; transform: translateY(-50%);
+            width: 32px; height: 32px; /* Botón un poco más pequeño */
             background: var(--neon-primary);
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
@@ -285,13 +303,13 @@
            ========================================================================== */
         .sidebar-profile {
             position: sticky;
-            top: 130px; /* Sticky behavior */
+            top: 100px; /* Ajustado por la barra más delgada */
             padding: 50px 40px;
             text-align: center;
             display: flex; flex-direction: column; align-items: center;
         }
 
-        /* Avatar con Anillo Animado (CORREGIDO ERROR DE MASK) */
+        /* Avatar con Anillo Animado */
         .avatar-container {
             width: 240px; height: 240px;
             position: relative;
@@ -304,8 +322,6 @@
             border: 3px solid transparent;
             background: linear-gradient(45deg, var(--neon-primary), transparent, var(--neon-secondary)) border-box;
             
-            /* --- CORRECCIÓN DEL ERROR DE CSS (Line 267) --- */
-            /* Se define primero la propiedad estándar, luego la propietaria */
             -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
             mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
             
@@ -440,7 +456,7 @@
         .track-left { display: flex; align-items: center; gap: 25px; flex: 1; }
         .track-index { font-family: 'Montserrat', sans-serif; font-weight: 900; color: var(--text-tertiary); font-size: 1.2rem; width: 40px; }
         
-        /* Visualizador de Audio (Barras animadas) */
+        /* Visualizador de Audio */
         .visualizer { display: flex; gap: 3px; align-items: flex-end; height: 20px; width: 20px; display: none; }
         .track-row:hover .visualizer { display: flex; }
         .track-row:hover .track-index { display: none; }
@@ -512,7 +528,7 @@
         .album-year { color: var(--text-tertiary); font-size: 0.85rem; font-family: 'Montserrat', sans-serif; }
 
         /* ==========================================================================
-           8. PANTALLA DE INICIO (HERO)
+           8. PANTALLA DE INICIO (HERO) - MODIFICADO CON ORO Y CINZEL
            ========================================================================== */
         .hero-section {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -521,12 +537,21 @@
         @keyframes heroFade { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
         .hero-logo {
-            font-family: 'Montserrat', sans-serif; font-size: 7rem; font-weight: 900;
-            letter-spacing: -4px; margin: 0;
-            background: -webkit-linear-gradient(0deg, #fff, #555);
-            -webkit-background-clip: text; background-clip: text;
+            /* Fuente Cinzel */
+            font-family: 'Cinzel', serif;
+            font-size: 6rem; /* Ajustado para Cinzel */
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin: 0;
+            
+            /* Efecto Dorado */
+            background: linear-gradient(to right, var(--gold-dark), var(--gold-main), var(--gold-light), var(--gold-main));
+            -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 20px 60px rgba(0,0,0,0.7);
+            color: transparent;
+            
+            text-shadow: 0 5px 25px rgba(0,0,0,0.5); /* Sombra para legibilidad */
         }
 
         .hero-tagline {
@@ -619,13 +644,14 @@
 
     <nav class="navbar">
         <a href="/" class="brand-wrapper">
-            <div class="brand-logo">LEGATUM<span class="brand-dot">.</span></div>
+            <img src="{{ url_for('static', filename='golden-feather.png') }}" alt="Legatum Gold Icon" class="brand-icon-img">
+            <div class="brand-logo">LEGATUM</div>
         </a>
 
         <div class="nav-menu">
-            <a href="/" class="nav-item active">Inicio</a>
-            <a href="/artistas" class="nav-item">Descubrir</a>
-            <a href="/generos" class="nav-item">Géneros</a>
+            <a href="/" class="nav-link active">Inicio</a>
+            <a href="/artistas" class="nav-link">Descubrir</a>
+            <a href="/generos" class="nav-link">Géneros</a>
         </div>
 
         <form class="header-search" method="POST" action="/">
@@ -798,7 +824,7 @@
             
             <div class="hero-section">
                 <h1 class="hero-logo">LEGATUM</h1>
-                <div class="hero-tagline">EL UNIVERSO DEL SONIDO</div>
+                <div class="hero-tagline">Donde el sonido se convierte en legado</div>
                 <p class="hero-desc">
                     Conecta todas tus fuentes musicales en una interfaz unificada.
                     <br>Búsqueda Inteligente • Datos Verificados • Streaming Visual
@@ -834,7 +860,7 @@
     </div>
 
     <footer class="footer">
-        <p>&copy; 2024 Legatum Music System. Enterprise Edition v4.2</p>
+        <p>&copy; 2025 Legatum Music System. Enterprise Edition v4.2</p>
         <p style="opacity:0.5; margin-top:5px; font-size:0.75rem;">
             Construido con Python Flask • Spotify API • Last.fm • YouTube Data API
         </p>
